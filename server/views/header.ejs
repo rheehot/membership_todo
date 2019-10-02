@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Boostcamp Admin</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+   <link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+        <nav class="navbar navbar-inverse" style="width:100vw; border-radius: 0;"> 
+            <div class="container-fluid"> 
+                <div class="navbar-header">
+                    <!-- 오른쪽 메뉴바 -->
+                    <button type="button" class="collapsed navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-12" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span> 
+                        <span class="icon-bar"></span> 
+                        <span class="icon-bar"></span>
+                    </button> 
+                    <a href="/" class="navbar-brand">BOOSTCAMP ADMIN</a>
+                </div> 
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-12">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="active">
+                            <a href="/">Home</a>
+                        </li>
+                        <% if(typeof(userData)!=='undefined' && userData.auth==='admin'){%>
+                            <li><a href="/admin/users">ADMIN</a></li>
+                        <%}%>
+                    </ul> 
+                </div> 
+            </div> 
+        </nav>
+        <div class="container">

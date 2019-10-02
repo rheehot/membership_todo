@@ -1,0 +1,30 @@
+<% include ../../header.ejs %> 
+<% include ../sidebar.ejs %>
+<div class="col-sm-10">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+        유저 리스트
+    </div>
+    <table class="table table-bordered table-hover">
+      <tr>
+        <th>아이디</th>
+        <th>이름</th>
+        <th>가입일</th>
+        <th>수정일</th>
+        <th>권한</th>
+      </tr>
+      <% users.forEach((user)=>{ %>
+      <tr>
+        <td>
+          <a href="/admin/auth/<%=user.id%>"><%=user.userId%></a>
+        </td>
+        <td><%=user.name%></td>
+        <td><%=user.regDate%></td>
+        <td><%=user.updateDate%></td>
+        <td><%=user.auth%></td>
+      </tr>    
+      <%});%>
+    </table>
+    </div>
+  </div>
+<% include ../../footer.ejs %>

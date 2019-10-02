@@ -1,0 +1,96 @@
+{
+  "name": "membership-todo",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon app.js",
+    "apidoc": "apidoc -i server/ -o server/apidoc/ -e node_modules/",
+    "build": "NODE_ENV=production webpack --config client/webpack/webpack.config.prod.js  --colors",
+    "client": "webpack-dev-server --open --config client/webpack/webpack.config.dev.js",
+    "test": "mocha server/test/*.spec.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aereeeee/membership-todo.git"
+  },
+  "author": "aeree cho",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/aereeeee/membership-todo/issues"
+  },
+  "homepage": "https://github.com/aereeeee/membership-todo#readme",
+  "devDependencies": {
+    "@babel/core": "^7.4.0",
+    "@babel/plugin-proposal-class-properties": "^7.4.0",
+    "@babel/plugin-syntax-dynamic-import": "^7.2.0",
+    "@babel/preset-env": "^7.4.2",
+    "@commitlint/cli": "^8.2.0",
+    "@commitlint/config-conventional": "^8.2.0",
+    "babel-loader": "^8.0.5",
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
+    "clean-webpack-plugin": "^2.0.2",
+    "css-loader": "^3.0.0",
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-loader": "^3.0.0",
+    "eslint-plugin-import": "^2.18.2",
+    "file-loader": "^4.0.0",
+    "html-webpack-plugin": "^4.0.0-beta.5",
+    "husky": "^3.0.5",
+    "lint-staged": "^9.2.5",
+    "mini-css-extract-plugin": "^0.8.0",
+    "mocha": "^6.2.0",
+    "node-sass": "^4.12.0",
+    "prettier": "^1.18.2",
+    "sass-loader": "^7.1.0",
+    "style-loader": "^0.23.1",
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.3.0",
+    "webpack-dev-server": "^3.2.1",
+    "webpack-merge": "^4.2.1"
+  },
+  "dependencies": {
+    "@babel/polyfill": "^7.4.0",
+    "apidoc": "^0.17.7",
+    "aws-sdk": "^2.535.0",
+    "connect-flash": "^0.1.1",
+    "connect-redis": "^4.0.2",
+    "cookie-parser": "~1.4.4",
+    "core-js": "^3.0.1",
+    "debug": "~2.6.9",
+    "dotenv": "^8.1.0",
+    "ejs": "~2.6.1",
+    "express": "~4.16.1",
+    "express-session": "^1.16.2",
+    "http-errors": "~1.6.3",
+    "morgan": "~1.9.1",
+    "multer": "^1.4.2",
+    "multer-s3": "^2.9.0",
+    "mysql2": "^1.7.0",
+    "node-sass-middleware": "0.11.0",
+    "nodemon": "^1.19.2",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
+    "redis": "^2.8.0",
+    "serve-favicon": "^2.5.0",
+    "uuid": "^3.3.3"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,json,css,scss}": [
+      "git add"
+    ]
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  }
+}
