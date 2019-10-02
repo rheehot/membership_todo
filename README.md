@@ -2,4 +2,4 @@
 
 ## db modeling
 
-![img](./assets/db-model.png)
+![img](./assets/db-modeling.png)
