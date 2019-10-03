@@ -1,36 +1,43 @@
 const pool = require('./db');
-const userModel = require('../models/users');
-const passwordHash = require('../utils/passwordHash');
+const boardModel = require('../models/board');
 const convertTime = require('../utils/convertTime');
 
+/**
+ * 보드 시퀀스로 보드 조회
+ * 보드의 컬럼과 아이템 한번에 가져온다.
+ *
+ * @param {number} seq
+ * @return {object} board
+ */
+const getBoard = async (seq) => {
+  const sql = `SELECT * FROM user WHERE id = ${id}`;
+  `SELECT BOARD.seq, COL.*, ITEM.*
+  FROM BOARD
+      LEFT OUTER JOIN TB_CUST C ON O.CUST_NO = COL.CUST_NO
+      LEFT OUTER JOIN TB_PRODUCT P ON O.PRODUCT_NO = P.PRODUCT_NO
+  WHERE
+      C.CUST_NAME = 'MIKE'
+  [출처] [MSSQL] 3개 이상 테이블 조인|작성자 똑똑이`;
+  const [rows] = await pool.query(sql);
+
+  return rows.length === 0 ? null : await userModel(rows[0]);
+};
 
 /**
- * 모든 유저 조회
+ * 유저의 모든 보드 조회
+ * 유저가 소유한 보드(프로젝트) 목록에 사용한다.
  *
- * @param {} no param
- * @return {object} user
+ * @param {userSeq} user seq
+ * @return {array} boards
  */
-const getAllUsers = async () => {
-  const sql = 'SELECT * FROM user';
+const getAllBoards = async (userSeq) => {
+  const sql = `SELECT * FROM BOARD where user_seq = ${userSeq}`;
   const [rows] = await pool.query(sql);
 
   if (rows.length === 0) return null;
 
-  const result = rows.map((row) => userModel(row));
+  const result = rows.map((row) => boardModel(row));
   return await result;
-};
-
-/**
- * 유저 넘버(id)로 유저 조회
- *
- * @param {number} id
- * @return {object} user
- */
-const getUser = async (id) => {
-  const sql = `SELECT * FROM user WHERE id = ${id}`;
-  const [rows] = await pool.query(sql);
-
-  return rows.length === 0 ? null : await userModel(rows[0]);
 };
 
 /**

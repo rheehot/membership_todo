@@ -1,7 +1,9 @@
-const user = require('./users');
-const main = require('./main-carousel');
-const mini = require('./mini-carousel');
-const mainItem = require('./main-carousel-item');
-const miniItem = require('./mini-carousel-item');
+const user = require('./user');
+const board = require('./board');
+const column = require('./column');
+const item = require('./item');
+const file = require('./file');
+const log = require('./log');
+const auth = require('./auth');
 
-module.exports = { user, main, mini, mainItem, miniItem };
+module.exports = { user, board, column, item, file, log, auth };
