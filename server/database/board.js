@@ -66,4 +66,43 @@ const createBoard = async (board) => {
   return await getBoardItems(seq);
 };
 
+/**
+ * 보드 정보 수정
+ *
+ * @param {number, object} seq, board
+ * @return {object} board items
+ */
+const modifyBoard = async (seq, board) => {
+  const { userSeq, title, auth } = board;
+  const queries = [];
+
+  if (userSeq !== undefined) {
+    queries.push(`user_seq= '${userSeq}'`);
+  }
+  if (title !== undefined) {
+    queries.push(`title='${title}'`);
+  }
+  if (auth !== undefined) {
+    queries.push(`auth='${auth}'`);
+  }
+  queries.push(`update_date='${convertTime()}'`);
+
+  const sql = `UPDATE BOARD SET ${queries.join(',')} WHERE seq = ${seq};`;
+  await pool.query(sql);
+
+  return await getBoardItems(seq);
+};
+
+/**
+   * 유저 정보 삭제
+   *
+   * @param {number} id
+   * @return {object} user
+   */
+const deleteUser = async (id) => {
+  const sql1 = `DELETE FROM user WHERE id = ${id};`;
+  const [rows] = await pool.query(sql1);
+  return rows;
+};
+
 module.exports = { getBoardItems, getBoardsByUser, createBoard };
