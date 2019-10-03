@@ -1,5 +1,6 @@
 const pool = require('./db');
 const boardModel = require('../models/board');
+const boardItemsModel = require('../models/boardItems');
 const convertTime = require('../utils/convertTime');
 
 /**
@@ -7,20 +8,22 @@ const convertTime = require('../utils/convertTime');
  * 보드의 컬럼과 아이템 한번에 가져온다.
  *
  * @param {number} seq
- * @return {object} board
+ * @return {array} board items
  */
-const getBoard = async (seq) => {
-  const sql = `SELECT * FROM user WHERE id = ${id}`;
-  `SELECT BOARD.seq, COL.*, ITEM.*
-  FROM BOARD
-      LEFT OUTER JOIN TB_CUST C ON O.CUST_NO = COL.CUST_NO
-      LEFT OUTER JOIN TB_PRODUCT P ON O.PRODUCT_NO = P.PRODUCT_NO
+const getBoardItems = async (seq) => {
+  const sql = `SELECT B.seq as board_seq, 
+  C.seq as col_seq, C.title as col_title, C.order as col_order, 
+  I.seq as item_seq, I.user_id, I.content, I.order as item_order
+  FROM BOARD B
+    LEFT OUTER JOIN COL C ON B.seq = C.board_seq
+    LEFT OUTER JOIN ITEM I ON C.seq = I.col_seq
   WHERE
-      C.CUST_NAME = 'MIKE'
-  [출처] [MSSQL] 3개 이상 테이블 조인|작성자 똑똑이`;
+    B.seq = ${seq}`;
+
   const [rows] = await pool.query(sql);
 
-  return rows.length === 0 ? null : await userModel(rows[0]);
+  const result = rows.map((row) => boardItemsModel(row));
+  return await result;
 };
 
 /**
@@ -30,7 +33,7 @@ const getBoard = async (seq) => {
  * @param {userSeq} user seq
  * @return {array} boards
  */
-const getAllBoards = async (userSeq) => {
+const getBoardsByUser = async (userSeq) => {
   const sql = `SELECT * FROM BOARD where user_seq = ${userSeq}`;
   const [rows] = await pool.query(sql);
 
@@ -41,94 +44,26 @@ const getAllBoards = async (userSeq) => {
 };
 
 /**
- * 유저 아이디(user_id)로 유저 조회
+ * 보드 생성
+ * 보드를 생성할때 디폴트 컬럼 3개가 생성된다.
+ * 생성한 보드를 반환한다. (TODO: 생성하고 바로 보드를 확인 하지 않으면 필요 없음)
  *
- * @param {string} userId
- * @return {object} user
+ * @param {object} board json
+ * @return {object} board items
  */
-const getUserById = async (userId) => {
-  const sql = `SELECT * FROM user WHERE user_id = '${userId}'`;
-  const [rows] = await pool.query(sql);
+const createBoard = async (board) => {
+  const { userSeq, title } = board;
+  const auth = !board.auth ? 'public' : board.auth;
 
-  return rows.length === 0 ? null : await userModel(rows[0]);
-};
-
-/**
- * 유저데이터 삽입, 해당 유저 반환
- *
- * @param {object} user json
- * @return {object} user
- */
-const createUser = async (user) => {
-  const { userId, pw, name, birth, gender, email, phone, favorite } = user;
-  const auth = !user.auth ? 'user' : user.auth;
-
-  const sql1 = `INSERT INTO user (user_id, pw, name, birth, gender, email, phone, favorite, auth ) VALUES ('${userId}', '${passwordHash(pw)}', '${name}', '${birth}', '${gender}', '${email}', '${phone}', '${favorite}', '${auth}');`;
+  const sql1 = `INSERT INTO BOARD (user_seq, title, auth ) VALUES ('${userSeq}', '${title}', '${auth}');`;
 
   await pool.query(sql1);
 
-  const sql2 = 'SELECT LAST_INSERT_ID() AS id;';
+  const sql2 = 'SELECT LAST_INSERT_ID() AS seq;';
   const [rows] = await pool.query(sql2);
 
-  const { id } = rows[0];
-  return await getUser(id);
+  const { seq } = rows[0];
+  return await getBoardItems(seq);
 };
 
-/**
- * 유저 정보 수정
- *
- * @param {number, object} id, user
- * @return {object} user
- */
-const modifyUser = async (seqId, user) => {
-  const { userId, pw, name, birth, gender, email, phone, favorite, auth } = user;
-  const queries = [];
-
-  if (userId !== undefined) {
-    queries.push(`user_id= '${userId}'`);
-  }
-  if (pw !== undefined) {
-    queries.push(`pw='${passwordHash(pw)}'`);
-  }
-  if (name !== undefined) {
-    queries.push(`name='${name}'`);
-  }
-  if (birth !== undefined) {
-    queries.push(`birth='${birth}'`);
-  }
-  if (gender !== undefined) {
-    queries.push(`gender='${gender}'`);
-  }
-  if (email !== undefined) {
-    queries.push(`email='${email}'`);
-  }
-  if (phone !== undefined) {
-    queries.push(`phone='${phone}'`);
-  }
-  if (favorite !== undefined) {
-    queries.push(`favorite='${favorite}'`);
-  }
-  if (auth !== undefined) {
-    queries.push(`auth='${auth}'`);
-  }
-  queries.push(`update_date='${convertTime()}'`);
-
-  const sql = `UPDATE user SET ${queries.join(',')} WHERE id = ${seqId};`;
-  await pool.query(sql);
-
-  return await getUser(seqId);
-};
-
-/**
- * 유저 정보 삭제
- *
- * @param {number} id
- * @return {object} user
- */
-const deleteUser = async (id) => {
-  const sql1 = `DELETE FROM user WHERE id = ${id};`;
-  const [rows] = await pool.query(sql1);
-  return rows;
-};
-
-module.exports = { createUser, getAllUsers, getUser, getUserById, modifyUser, deleteUser };
+module.exports = { getBoardItems, getBoardsByUser, createBoard };
