@@ -94,15 +94,15 @@ const modifyBoard = async (seq, board) => {
 };
 
 /**
-   * 유저 정보 삭제
-   *
-   * @param {number} id
-   * @return {object} user
-   */
-const deleteUser = async (id) => {
-  const sql1 = `DELETE FROM user WHERE id = ${id};`;
+ * 보드 정보 삭제
+ *
+ * @param {number} seq
+ * @return {object} info
+ */
+const deleteBoard = async (seq) => {
+  const sql1 = `DELETE FROM BOARD WHERE seq = ${seq};`;
   const [rows] = await pool.query(sql1);
   return rows;
 };
 
-module.exports = { getBoardItems, getBoardsByUser, createBoard };
+module.exports = { getBoardItems, getBoardsByUser, createBoard, modifyBoard, deleteBoard };
