@@ -1,6 +1,5 @@
 const pool = require('./db');
-const boardModel = require('../models/board');
-const boardItemsModel = require('../models/boardItems');
+const { boardModel, boardItemsModel } = require('../models/board');
 const convertTime = require('../utils/convertTime');
 
 /**
