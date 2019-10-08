@@ -1,5 +1,5 @@
 import Observable from '../utils/observable';
-import { getData } from '../utils/dataFetch';
+import { getData, postData, deleteData, putData } from '../utils/dataFetch';
 
 class TodoModel extends Observable {
   constructor(url) {
@@ -10,18 +10,53 @@ class TodoModel extends Observable {
   }
 
   addTodo(todo) {
-    this.todos = [...this.todos, todo];
-    this.notify(this.todos);
+    this.todoData = [...this.todoData, todo];
+    this.notify('todo', this.todoData);
+  }
+
+  updateTodo(todo) {
+    this.todoData.forEach((el) => {
+      if (el.seq === todo.seq) {
+        const propertyArr = Object.keys(el);
+        propertyArr.forEach((property) => {
+          el[property] = todo[property];
+        });
+      }
+    });
+    this.notify('todo', this.todoData);
+  }
+
+  deleteTodo(todo) {
+    this.todoData = this.todoData.filter((el) => el !== todo);
+    this.notify('todo', this.todoData);
   }
 
   addColumn(col) {
-    this.col;
+    this.columnData = [...this.columnData, col];
+    this.notify('column', this.columnData);
+  }
+
+  updateColumn(col) {
+    this.columnData.forEach((el) => {
+      if (el.seq === col.seq) {
+        const propertyArr = Object.keys(el);
+        propertyArr.forEach((property) => {
+          el[property] = col[property];
+        });
+      }
+    });
+    this.notify('column', this.todoData);
+  }
+
+  deleteColumn(col) {
+    this.todoData = this.todoData.filter((el) => el !== col);
+    this.notify('column', this.todoData);
   }
 
   async getInitialData() {
     const initialData = await getData(this.url);
 
-    initialData.reduce((acc, cur, idx) => {
+    initialData.reduce((acc, cur) => {
       const { itemSeq, userID, content, itemOrder } = acc;
       this.todoData.push({ itemSeq, userID, content, itemOrder });
 

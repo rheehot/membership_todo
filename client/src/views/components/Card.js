@@ -1,7 +1,8 @@
-import { selector as $ } from '../../utils';
+import { selector as $ } from "../../utils";
 
 class Card {
   constructor(todo) {
+    this.seq = todo.seq;
     this.colSeq = todo.colSeq;
     this.content = todo.content;
     this.order = todo.order;
@@ -17,7 +18,7 @@ class Card {
       `;
 
     const cards = $(`#col${this.colSeq} .cards`);
-    cards.insertAdjacentHTML('beforeend', cardTmpl);
+    cards.insertAdjacentHTML("beforeend", cardTmpl);
   }
 
   addDragEvent() {

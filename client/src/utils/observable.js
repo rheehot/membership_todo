@@ -1,20 +1,31 @@
 class Observable {
   constructor() {
-    this._observers = new Set();
+    this.handlers = {};
   }
 
   subscribe(observer) {
-    this._observers.add(observer);
+    const { eventName, handler } = observer;
+
+    if (this.handlers[eventName] === undefined) {
+      this.handlers[eventName] = [];
+    }
+    this.handlers[eventName].push(handler);
   }
 
   unsubscribe(observer) {
-    this._observers = [...this._observers].filter(
-      (subscriber) => subscriber !== observer,
-    );
+    const { eventName, handler } = observer;
+    const handlerArr = this.handlers[eventName];
+
+    if (handlerArr === undefined) return;
+
+    this.handlers[eventName] = [...handlerArr].filter((el) => el !== handler);
   }
 
-  notify(data) {
-    this._observers.forEach((observer) => observer(data));
+  notify(eventName, data) {
+    const handlerArr = this.handlers[eventName];
+    if (handlerArr === undefined) return;
+
+    handlerArr.forEach((handler) => handler(data));
   }
 }
 
