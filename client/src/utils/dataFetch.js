@@ -40,7 +40,11 @@ const getData = async (url) => {
       'Content-Type': 'application/json',
     },
   };
-  const response = await fetch(url, options).then((res) => res.json());
+  const response = await fetch(url, options)
+    .then((res) => res.json())
+    .catch((error) => {
+      throw error;
+    });
   return response;
 };
 

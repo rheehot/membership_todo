@@ -12,7 +12,7 @@ const convertTime = require('../utils/convertTime');
  */
 const getAllUsers = async () => {
   const sql = 'SELECT * FROM USER';
-  const [rows] = await pool.query(sql);
+  const [rows] = await pool.execute(sql);
 
   if (rows.length === 0) return null;
 
@@ -28,7 +28,7 @@ const getAllUsers = async () => {
  */
 const getUser = async (seq) => {
   const sql = `SELECT * FROM USER WHERE seq = ${seq}`;
-  const [rows] = await pool.query(sql);
+  const [rows] = await pool.execute(sql);
 
   return rows.length === 0 ? null : await userModel(rows[0]);
 };
@@ -41,7 +41,7 @@ const getUser = async (seq) => {
  */
 const getUserById = async (userId) => {
   const sql = `SELECT * FROM USER WHERE user_id = '${userId}'`;
-  const [rows] = await pool.query(sql);
+  const [rows] = await pool.execute(sql);
 
   return rows.length === 0 ? null : await userModel(rows[0]);
 };
@@ -58,10 +58,10 @@ const createUser = async (user) => {
 
   const sql1 = `INSERT INTO user (user_id, pw, name, birth, gender, email, phone, favorite, auth ) VALUES ('${userId}', '${passwordHash(pw)}', '${name}', '${birth}', '${gender}', '${email}', '${phone}', '${favorite}', '${auth}');`;
 
-  await pool.query(sql1);
+  await pool.execute(sql1);
 
   const sql2 = 'SELECT LAST_INSERT_ID() AS seq;';
-  const [rows] = await pool.query(sql2);
+  const [rows] = await pool.execute(sql2);
 
   const { seq } = rows[0];
   return await getUser(seq);
@@ -107,7 +107,7 @@ const modifyUser = async (seq, user) => {
   queries.push(`update_date='${convertTime()}'`);
 
   const sql = `UPDATE USER SET ${queries.join(',')} WHERE seq = ${seq};`;
-  await pool.query(sql);
+  await pool.execute(sql);
 
   return await getUser(seq);
 };
@@ -120,7 +120,7 @@ const modifyUser = async (seq, user) => {
  */
 const deleteUser = async (seq) => {
   const sql1 = `DELETE FROM USER WHERE seq = ${seq};`;
-  const [rows] = await pool.query(sql1);
+  const [rows] = await pool.execute(sql1);
   return rows;
 };
 

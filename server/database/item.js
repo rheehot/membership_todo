@@ -70,7 +70,7 @@ const modifyItem = async (seq, item) => {
   queries.push(`update_date='${convertTime()}'`);
 
   const sql = `UPDATE ITEM SET ${queries.join(',')} WHERE ?;`;
-  await pool.query(sql, { seq });
+  await pool.execute(sql, { seq });
 
   return await getItem(seq);
 };
@@ -83,7 +83,7 @@ const modifyItem = async (seq, item) => {
  */
 const deleteItem = async (seq) => {
   const sql1 = 'DELETE FROM ITEM WHERE ?;';
-  const [rows] = await pool.query(sql1, { seq });
+  const [rows] = await pool.execute(sql1, { seq });
   return rows;
 };
 

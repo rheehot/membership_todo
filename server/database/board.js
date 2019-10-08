@@ -17,9 +17,9 @@ const getBoardItems = async (seq) => {
     LEFT OUTER JOIN COL C ON B.seq = C.board_seq
     LEFT OUTER JOIN ITEM I ON C.seq = I.col_seq
   WHERE
-    B.seq = ${seq}`;
+    B.seq = ?`;
 
-  const [rows] = await pool.query(sql);
+  const [rows] = await pool.execute(sql, [seq]);
 
   const result = rows.map((row) => boardItemsModel(row));
   return await result;
@@ -33,8 +33,8 @@ const getBoardItems = async (seq) => {
  * @return {array} boards
  */
 const getBoardsByUser = async (userSeq) => {
-  const sql = `SELECT * FROM BOARD where user_seq = ${userSeq}`;
-  const [rows] = await pool.query(sql);
+  const sql = 'SELECT * FROM BOARD where user_seq =?';
+  const [rows] = await pool.execute(sql, [userSeq]);
 
   if (rows.length === 0) return null;
 
@@ -54,12 +54,12 @@ const createBoard = async (board) => {
   const { userSeq, title } = board;
   const auth = !board.auth ? 'public' : board.auth;
 
-  const sql1 = `INSERT INTO BOARD (user_seq, title, auth ) VALUES ('${userSeq}', '${title}', '${auth}');`;
+  const sql1 = 'INSERT INTO BOARD (user_seq, title, auth ) VALUES (?,?,?);';
 
-  await pool.query(sql1);
+  await pool.execute(sql1, [userSeq, title, auth]);
 
   const sql2 = 'SELECT LAST_INSERT_ID() AS seq;';
-  const [rows] = await pool.query(sql2);
+  const [rows] = await pool.execute(sql2);
 
   const { seq } = rows[0];
   return await getBoardItems(seq);
@@ -87,7 +87,7 @@ const modifyBoard = async (seq, board) => {
   queries.push(`update_date='${convertTime()}'`);
 
   const sql = `UPDATE BOARD SET ${queries.join(',')} WHERE seq = ${seq};`;
-  await pool.query(sql);
+  await pool.execute(sql);
 
   return await getBoardItems(seq);
 };
@@ -100,7 +100,7 @@ const modifyBoard = async (seq, board) => {
  */
 const deleteBoard = async (seq) => {
   const sql1 = `DELETE FROM BOARD WHERE seq = ${seq};`;
-  const [rows] = await pool.query(sql1);
+  const [rows] = await pool.execute(sql1);
   return rows;
 };
 
