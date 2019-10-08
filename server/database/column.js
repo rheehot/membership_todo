@@ -11,7 +11,7 @@ const convertTime = require('../utils/convertTime');
  */
 const getColumn = async (seq) => {
   const sql = `SELECT * FROM COL WHERE seq = ${seq}`;
-  const [rows] = await pool.query(sql);
+  const [rows] = await pool.execute(sql);
 
   return rows.length === 0 ? null : await columnModel(rows[0]);
 };
@@ -27,10 +27,10 @@ const createColumn = async (column) => {
 
   const sql1 = `INSERT INTO COL (board_seq, title, order ) VALUES ('${boardSeq}', '${title}', '${order}');`;
 
-  await pool.query(sql1);
+  await pool.execute(sql1);
 
   const sql2 = 'SELECT LAST_INSERT_ID() AS seq;';
-  const [rows] = await pool.query(sql2);
+  const [rows] = await pool.execute(sql2);
 
   const { seq } = rows[0];
   return await getColumn(seq);
@@ -59,7 +59,7 @@ const modifyColumn = async (seq, column) => {
   queries.push(`update_date='${convertTime()}'`);
 
   const sql = `UPDATE COL SET ${queries.join(',')} WHERE seq = ${seq};`;
-  await pool.query(sql);
+  await pool.execute(sql);
 
   return await getColumn(seq);
 };
@@ -72,7 +72,7 @@ const modifyColumn = async (seq, column) => {
  */
 const deleteColumn = async (seq) => {
   const sql1 = `DELETE FROM COL WHERE seq = ${seq};`;
-  const [rows] = await pool.query(sql1);
+  const [rows] = await pool.execute(sql1);
   return rows;
 };
 
