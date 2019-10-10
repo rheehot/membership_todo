@@ -75,4 +75,18 @@ const modifyAuth = async (_auth) => {
   return await getAuthbyUser(userSeq);
 };
 
-module.exports = { getAuthbyUser, getAuthbyBoard, createAuth, modifyAuth };
+
+/**
+ * 권한 삭제
+ *
+ * @param {number} seq
+ * @return {object} info
+ */
+const deleteAuth = async (_auth) => {
+  const { userSeq, boardSeq } = _auth;
+  const sql1 = `DELETE FROM AUTH WHERE board_seq = ${boardSeq} AND user_seq = ${userSeq};`;
+  const [rows] = await pool.execute(sql1);
+  return rows;
+};
+
+module.exports = { getAuthbyUser, getAuthbyBoard, createAuth, modifyAuth, deleteAuth };
