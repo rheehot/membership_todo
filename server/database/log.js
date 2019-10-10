@@ -39,10 +39,10 @@ const getBoardLogs = async (boardSeq) => {
  * @return {object} log
  */
 const createLog = async (log) => {
-  const { boardSeq, content } = log;
+  const { boardSeq, content, userId } = log;
 
-  const sql1 = 'INSERT INTO LOG (board_seq, content, createDate ) VALUES (?,?,?);';
-  await pool.execute(sql1, [boardSeq, content, convertTime()]);
+  const sql1 = 'INSERT INTO LOG (board_seq, content, user_id, createDate ) VALUES (?,?,?,?);';
+  await pool.execute(sql1, [boardSeq, content, userId, convertTime()]);
 
   const sql2 = 'SELECT LAST_INSERT_ID() AS seq;';
   const [rows] = await pool.excute(sql2);

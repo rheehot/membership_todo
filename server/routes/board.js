@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 const { board } = require('../database');
 
-// 보드 전체 정보 가져오기
+// 보드 전체 컨텐츠 가져오기
 /**
  * @api {get} /api/board Get Board Contents
  * @apiName GetBoardContents
@@ -124,7 +124,7 @@ router.post('/', async (req, res, next) => {
 router.put('/:boardSeq', async (req, res, next) => {
   const { boardSeq } = req.params;
   try {
-    const result = await board.createBoard(boardSeq, req.body);
+    const result = await board.modifyBoard(boardSeq, req.body);
     res.status(200).json(result);
   } catch (err) {
     next(err);

@@ -110,7 +110,7 @@ router.post('/', async (req, res, next) => {
  */
 router.put('/', async (req, res, next) => {
   try {
-    const result = await auth.modifyAuthBoard(req.body);
+    const result = await auth.modifyAuth(req.body);
     res.status(200).json(result);
   } catch (err) {
     next(err);
