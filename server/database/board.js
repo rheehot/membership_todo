@@ -2,6 +2,8 @@ const pool = require('./db');
 const { boardModel, boardItemsModel } = require('../models/board');
 const convertTime = require('../utils/convertTime');
 
+const defaultCol = ['todo', 'doing', 'done'];
+
 /**
  * 보드 시퀀스로 보드 조회
  * 보드의 컬럼과 아이템 한번에 가져온다.
@@ -47,7 +49,7 @@ const getBoardsByUser = async (userSeq) => {
 /**
  * 보드 생성
  * 보드를 생성할때 디폴트 컬럼 3개가 생성된다.
- * 생성한 보드를 반환한다. (TODO: 생성하고 바로 보드를 확인 하지 않으면 필요 없음)
+ * 생성한 보드를 반환한다.
  *
  * @param {object} board json
  * @return {object} board items
@@ -57,13 +59,17 @@ const createBoard = async (board) => {
   const auth = !board.auth ? 'public' : board.auth;
 
   const sql1 = 'INSERT INTO BOARD (user_seq, title, auth ) VALUES (?,?,?);';
-
   await pool.execute(sql1, [userSeq, title, auth]);
 
-  const sql2 = 'SELECT LAST_INSERT_ID() AS seq;';
-  const [rows] = await pool.execute(sql2);
-
+  const sql3 = 'SELECT LAST_INSERT_ID() AS seq;';
+  const [rows] = await pool.execute(sql3);
   const { seq } = rows[0];
+
+  for (const [i, name] of defaultCol.entries()) {
+    const sql2 = 'INSERT INTO COL (board_seq, title, order ) VALUES (?,?,?);';
+    await pool.execute(sql2, [seq, name, i]);
+  }
+
   return await getBoardItems(seq);
 };
 

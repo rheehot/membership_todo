@@ -9,6 +9,7 @@ const poolDB = mysql.createPool({
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
+  multipleStatements: true,
 });
 
 const pool = poolDB.promise();

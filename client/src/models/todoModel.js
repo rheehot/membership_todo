@@ -41,7 +41,7 @@ class TodoModel extends Observable {
    * @return {object} todo item
    */
   async updateTodo(seq, todo, todoArr) {
-    const result = { col, from: col.order, to: null };
+    const result = { todo, from: col.order, to: null };
     const result = await putData(this.url, seq, todo);
     this.notify("update", result);
     return result;
