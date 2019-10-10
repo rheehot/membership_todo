@@ -47,9 +47,18 @@
                 </li>
                 <li class="card">1</li>
                 <li class="card">1</li>
+                <li class="card">1</li>
+                <li class="card">1</li>
+                <li class="card">1</li>
+                <li class="card">1</li>
+                <li class="card">1</li>
+                <li class="card">1</li>
               </ul>
             </div>
           </div>
+        </section>
+        <section class="col">
+          <div class="colbox"></div>
         </section>
         <section class="col">
           <div class="colbox"></div>
@@ -66,4 +75,12 @@
       <aside class="sidebar"></aside>
     </div>
   </body>
+  <script>
+    const additembtn = document.querySelectorAll(".col-add");
+    additembtn.forEach(btn => {
+      btn.addEventListener("click", e => {
+        console.log(e);
+      });
+    });
+  </script>
 </html>

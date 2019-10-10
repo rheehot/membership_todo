@@ -50,6 +50,7 @@ nav {
 .columns {
   width: 100%;
   overflow-x: scroll;
+  overflow-y: hidden;
   flex: 1;
   display: flex;
   justify-content: flex-start;

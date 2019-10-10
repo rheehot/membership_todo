@@ -4,7 +4,8 @@
   box-sizing: border-box;
 }
 html,
-body {
+body,
+#page_container {
   width: 100%;
   height: 100%;
 }
@@ -13,6 +14,7 @@ body {
   height: 100%;
   display: flex;
   flex-direction: column;
+  flex-wrap: nowrap;
 }
 header {
   width: 100%;
@@ -22,6 +24,7 @@ header {
   justify-content: space-around;
   align-items: center;
   color: #fff;
+  flex-shrink: 0;
 }
 .board {
   width: 100%;
@@ -30,10 +33,12 @@ header {
   display: flex;
   align-items: center;
   padding: 0 30px;
+  flex-shrink: 0;
 }
 .board-title {
   font-size: 1.5rem;
   color: #666;
+  flex-shrink: 0;
 }
 nav {
   width: 100%;
@@ -43,6 +48,7 @@ nav {
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  flex-shrink: 0;
 }
 
 /* col */
@@ -50,13 +56,15 @@ nav {
   width: 100%;
   flex: 1;
   display: flex;
-  justify-content: space-around;
+  justify-content: flex-start;
   align-items: center;
   padding: 0 10px;
+  overflow-y: hidden;
 }
 .col {
   height: 100%;
-  flex: 1;
+  width: 23%;
+  flex-shrink: 0;
   display: flex;
   flex-direction: column;
 }
@@ -66,6 +74,9 @@ nav {
   background: rgb(239, 241, 243);
   border: 1px solid #ddd;
   border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .col.expect .colbox {
@@ -115,6 +126,8 @@ nav {
 .cardlist {
   width: 100%;
   padding: 10px;
+  flex: 1;
+  overflow-y: scroll;
 }
 .card {
   width: 100%;

@@ -1,8 +1,6 @@
+import { ColumnModel, TodoModel } from '../../models';
 import { Card, Column, SideBar, Header } from '../components';
 import { selector as $ } from '../../utils';
-
-import ColumnModel from '../../models/ColumnModel';
-import TodoModel from '../../models/TodoModel';
 
 const columnModel = new ColumnModel('http://localhost:3000/api/column');
 const todoModel = new TodoModel('http://localhost:3000/api/item');
