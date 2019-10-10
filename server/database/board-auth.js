@@ -1,6 +1,5 @@
 const pool = require('./db');
-const authModel = require('../models/auth');
-const convertTime = require('../utils/convertTime');
+const boardAuthModel = require('../models/board-auth');
 
 
 /**
@@ -14,7 +13,7 @@ const getAuthbyUser = async (userSeq) => {
   const [rows] = await pool.execute(sql, [userSeq]);
 
   if (rows.length === 0) return null;
-  const result = rows.map((row) => boardItemsModel(row));
+  const result = rows.map((row) => boardAuthModel(row));
 
   return await result;
 };
@@ -30,7 +29,7 @@ const getAuthbyBoard = async (boardSeq) => {
   const [rows] = await pool.execute(sql, [boardSeq]);
 
   if (rows.length === 0) return null;
-  const result = rows.map((row) => boardItemsModel(row));
+  const result = rows.map((row) => boardAuthModel(row));
 
   return await result;
 };
@@ -50,7 +49,7 @@ const createAuth = async (_auth) => {
   const sql2 = 'SELECT FROM AUTH WHERE board_seq =? AND user_seq = ?;';
   const [rows] = await pool.execute(sql2, [boardSeq, userSeq]);
 
-  return rows.length === 0 ? null : await authModel(rows[0]);
+  return rows.length === 0 ? null : await boardAuthModel(rows[0]);
 };
 
 /**
