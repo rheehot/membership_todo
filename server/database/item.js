@@ -41,7 +41,8 @@ const createItem = async (item) => {
   const [rows] = await pool.excute(sql2);
   const { seq } = rows[0];
 
-  return await getItem(seq);
+  // return await getItem(seq);
+  return seq;
 };
 
 /**

@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 const { item, file } = require('../database');
 
-const { upload, deleteFile } = reauire('../middlewares/multer');
+const { upload, deleteStorage } = reauire('../middlewares/multer');
 
 // 아이템 가져오기
 /**
@@ -51,76 +51,111 @@ router.get('/', async (req, res, next) => {
  *      file: 'file'
  *  }
  *
- * @apiSuccessExample Success-Response:
- *  {
- *   seq: 1,
- *   userSeq: 1,
- *   createDate:'2018-8-1',
- *   updateDate:'2018-8-1',
- *   auth: 'public'
- *   title: 'todo'
+ * @apiSuccessExample {json} Success:
+ * [
+ *    {
+ *      seq:1,
+ *      colSeq:1,
+ *      userId:'ttt',
+ *      content:'aaa',
+ *      order:1,
+ *      url:'aaa.com',
+ *      createDate:'2018-04-1',
+ *      updateDate:'2018-04-1'
  *  },
+ * ]
  */
 router.post('/', upload.array('file'), async (req, res, next) => {
-  const urls = req.files.map((f) => f.location);
+  const { colSeq, userId, content, order } = req.body;
+  const urls = req.files.length > 0 ? req.files.map((f) => f.location) : false;
+
   try {
-    const result = await board.createBoard(req.body);
+    const resertSeq = await item.createItem({ colSeq, userId, content, order });
+    if (urls) await file.createFile(resertSeq, urls);
+
+    const result = await item.getItem(resultSeq);
     res.status(200).json(result);
   } catch (err) {
     next(err);
   }
 });
 
-// 보드 수정
+// 아이템 수정
 /**
- * @api {pug} /api/board
- * @apiName modifyBoard
- * @apiGroup Board
+ * @api {put} /api/item
+ * @apiName modifyItem
+ * @apiGroup Item
  *
- * @apiParam (path) {Number} boardSeq
- * @apiParam {Json} body body.
+ * @apiParam (path) {Number} itemSeq
+ * @apiParam {formData} body body.
  * @apiParamExample {json} User Action:
- *  {
- *   userSeq: 1,
- *   auth: 'public'
- *   title: 'todo'
- *  },
+ * {
+ *      colSeq:1,
+ *      userId:'ttt',
+ *      content:'aaa',
+ *      order:1,
+ *      file: 'file'
+ *  }
  *
- * @apiSuccessExample Success-Response:
- *  {
- *   seq: 1,
- *   userSeq: 1,
- *   createDate:'2018-8-1',
- *   updateDate:'2018-8-1',
- *   auth: 'public'
- *   title: 'todo'
+ * @apiSuccessExample {json} Success:
+ * [
+ *    {
+ *      seq:1,
+ *      colSeq:1,
+ *      userId:'ttt',
+ *      content:'aaa',
+ *      order:1,
+ *      url:'aaa.com',
+ *      createDate:'2018-04-1',
+ *      updateDate:'2018-04-1'
  *  },
+ * ]
  */
-router.put('/:boardSeq', async (req, res, next) => {
-  const { boardSeq } = req.params;
+router.put('/:itemSeq', upload.array('file'), async (req, res, next) => {
+  const { itemSeq } = req.params;
+  const { colSeq, userId, content, order } = req.body;
+  const urls = req.files.length > 0 ? req.files.map((f) => f.location) : false;
+
   try {
-    const result = await board.modifyBoard(boardSeq, req.body);
+    // 기존의 파일과 스토리지 데이터를 삭제한다.
+    const files = await file.getItemFiles(itemSeq);
+    for (const f of files) {
+      await deleteStorage(f.url);
+      await deleteFile(f.seq);
+    }
+    // 파일을 새로 생성한다.
+    if (urls) await file.createFile(itemSeq, urls);
+    const result = await item.modifyItem(itemSeq, {
+      colSeq,
+      userId,
+      content,
+      order,
+    });
     res.status(200).json(result);
   } catch (err) {
     next(err);
   }
 });
 
-// 보드 삭제
+// 아이템 삭제
 /**
- * @api {delete} /api/board Delete Board
- * @apiName DeleteBoard
- * @apiGroup Board
+ * @api {delete} /api/item Delete Board
+ * @apiName DeleteItem
+ * @apiGroup Item
  *
- * @apiParam (path) {Number} BoardSeq
+ * @apiParam (path) {Number} itemSeq
  * @apiSuccessExample {json} Success:
  * HTTP/1.1 204 No Content
  */
-router.delete('/:boardSeq', async (req, res, next) => {
-  const { boardSeq } = req.params;
+router.delete('/:itemSeq', async (req, res, next) => {
+  const { itemSeq } = req.params;
   try {
-    await board.deleteBoard(boardSeq);
+    const files = await file.getItemFiles(itemSeq);
+    for (const f of files) {
+      await deleteStorage(f.url);
+    }
 
+    await item.deleteItem(itemSeq);
     res.status(204).end();
   } catch (err) {
     next(err);
