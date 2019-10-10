@@ -5,67 +5,59 @@ class TodoModel extends Observable {
   constructor(url) {
     super();
     this.url = url;
-    this.columnData = [];
-    this.todoData = [];
   }
 
-  addTodo(todo) {
-    this.todoData = [...this.todoData, todo];
-    this.notify('todo', this.todoData);
+  /**
+   * 아이템 시퀀스로 조회
+   * Todo 카드 클릭 시 이미지와 컨텐츠 가져오기 위해 사용
+   *
+   * @param {number} seq
+   * @return {object} todo item
+   */
+  async getTodo(seq) {
+    const result = await getData(this.url, seq);
+    return result;
   }
 
-  updateTodo(todo) {
-    this.todoData.forEach((el) => {
-      if (el.seq === todo.seq) {
-        const propertyArr = Object.keys(el);
-        propertyArr.forEach((property) => {
-          el[property] = todo[property];
-        });
-      }
-    });
-    this.notify('todo', this.todoData);
+  /**
+   * 아이템 생성
+   * 생성된 아이템 반환
+   * add이벤트 알림
+   *
+   * @param {object} todo item
+   * @return {object} todo item
+   */
+  async addTodo(todo) {
+    const result = await postData(this.url, todo);
+    this.notify('add', result);
+    return result;
   }
 
-  deleteTodo(todo) {
-    this.todoData = this.todoData.filter((el) => el !== todo);
-    this.notify('todo', this.todoData);
+  /**
+   * 아이템 시퀀스로 업데이트
+   * 카드 이동으로 인한 업데이트시 해당 컬럼과 이동한 컬럼의 모든 아이템 업데이트 필요
+   * update이벤트 알림
+   *
+   * @param {number, object} seq, todo item
+   * @return {object} todo item
+   */
+  async updateTodo(seq, todo) {
+    const result = await putData(this.url, seq, todo);
+    this.notify('update', result);
+    return result;
   }
 
-  addColumn(col) {
-    this.columnData = [...this.columnData, col];
-    this.notify('column', this.columnData);
-  }
-
-  updateColumn(col) {
-    this.columnData.forEach((el) => {
-      if (el.seq === col.seq) {
-        const propertyArr = Object.keys(el);
-        propertyArr.forEach((property) => {
-          el[property] = col[property];
-        });
-      }
-    });
-    this.notify('column', this.todoData);
-  }
-
-  deleteColumn(col) {
-    this.todoData = this.todoData.filter((el) => el !== col);
-    this.notify('column', this.todoData);
-  }
-
-  async getInitialData() {
-    const initialData = await getData(this.url);
-
-    initialData.reduce((acc, cur) => {
-      const { itemSeq, userID, content, itemOrder } = acc;
-      this.todoData.push({ itemSeq, userID, content, itemOrder });
-
-      if (acc.colSeq !== cur.colSeq) {
-        const { colSeq, colTitle, colOrder } = acc;
-        this.columnData.push({ colSeq, colTitle, colOrder });
-      }
-      return cur;
-    });
+  /**
+   * 아이템 시퀀스로 삭제
+   * delete이벤트 알림
+   *
+   * @param {number, object} seq, todo item
+   * @return {object} status
+   */
+  async deleteTodo(seq, todo) {
+    const result = await deleteData(this.url, seq);
+    this.notify('delete', todo);
+    return result;
   }
 }
 

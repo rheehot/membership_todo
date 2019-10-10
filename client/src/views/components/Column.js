@@ -1,7 +1,8 @@
 class Column {
-  constructor(col) {
-    this.this.title = col.title;
+  constructor(col, model) {
+    this.title = col.title;
     this.order = col.order;
+    this.model = model;
   }
 
   rederView() {}
