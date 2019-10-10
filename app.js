@@ -14,8 +14,14 @@ const favicon = require('serve-favicon');
 
 dotenv.config();
 
-const accounts = require('./server/routes/accounts');
 const admin = require('./server/routes/admin');
+const accounts = require('./server/routes/accounts');
+const board = require('./server/routes/board');
+const column = require('./server/routes/column');
+const item = require('./server/routes/item');
+const todo = require('./server/routes/item');
+const log = require('./server/routes/log');
+const boardAuth = require('./server/routes/board-auth');
 
 const app = express();
 app.use(favicon(path.join(__dirname, 'server/public', 'favicon.ico')));
@@ -79,6 +85,11 @@ app.use(express.static(path.join(__dirname, './server/public')));
 app.use('/api', express.static('./server/apidoc'));
 
 app.use('/api/accounts', accounts);
+app.use('/api/board', board);
+app.use('/api/column', column);
+app.use('/api/item', item);
+app.use('/api/log', log);
+app.use('/api/board-auth', boardAuth);
 app.use('/admin', admin);
 
 // error handling

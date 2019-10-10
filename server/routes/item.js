@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 const { item, file } = require('../database');
 
-const { upload, deleteStorage } = reauire('../middlewares/multer');
+const { upload, deleteStorage } = require('../middlewares/multer');
 
 // 아이템 가져오기
 /**

@@ -24,9 +24,10 @@ const { board } = require('../database');
  *  },
  * ]
  */
-router.get('/', async (req, res, next) => {
+router.get('/:boardSeq', async (req, res, next) => {
+  const { boardSeq } = req.params;
   try {
-    const result = await board.getBoardItems();
+    const result = await board.getBoardItems(boardSeq);
     res.status(200).send(result);
   } catch (err) {
     next(err);
@@ -53,7 +54,7 @@ router.get('/', async (req, res, next) => {
  *  },
  * ]
  */
-router.get('/:userSeq', async (req, res, next) => {
+router.get('/user/:userSeq', async (req, res, next) => {
   try {
     const { userSeq } = req.params;
     const result = await board.getBoardsByUser(userSeq);
