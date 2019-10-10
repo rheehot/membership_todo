@@ -21,7 +21,7 @@
       </div>
       <nav>view activity</nav>
       <article class="columns">
-        <section class="col">
+        <section class="col" id="col1" data-order="1">
           <div class="colbox">
             <div class="col-head">
               <div class="col-title">
@@ -32,6 +32,17 @@
                 <div class="col-add"><i class="fas fa-plus"></i></div>
                 <div class="col-set"><i class="fas fa-ellipsis-h"></i></div>
               </div>
+            </div>
+            <div class="card-add-input">
+              <textarea maxlength="500" placeholder="note..."> </textarea>
+              <dib class="card-add-btn">
+                <button class="create">
+                  add
+                </button>
+                <button class="cancle">
+                  calcle
+                </button>
+              </dib>
             </div>
             <div class="cardlist">
               <ul class="cards">
@@ -76,10 +87,15 @@
     </div>
   </body>
   <script>
+    const inputTmpl = ``;
     const additembtn = document.querySelectorAll(".col-add");
     additembtn.forEach(btn => {
       btn.addEventListener("click", e => {
-        console.log(e);
+        const path = e.path;
+        console.log(path);
+        const col = path.find(p => p.tagName === "SECTION");
+        const colhead = col.querySelector("col-head");
+        colhead.insertAdjacentHTML("afterend", inputTmpl);
       });
     });
   </script>

@@ -115,11 +115,14 @@ nav {
 }
 .col-btn {
   display: flex;
-  color: #666;
   cursor: pointer;
 }
 .col-btn div {
   padding: 5px;
+  color: #666;
+}
+.col-btn div:hover {
+  color: #000;
 }
 
 /* card */
@@ -162,4 +165,58 @@ nav {
   font-weight: normal;
   color: #000;
   align-self: flex-end;
+}
+
+.card-add-input {
+  width: 100%;
+  padding: 10px;
+}
+.card-add-input textarea {
+  resize: vertical;
+  width: 100%;
+  height: 60px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  padding: 10px;
+}
+
+.card-add-btn {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.card-add-btn button {
+  flex: 1;
+  height: 40px;
+  text-align: center;
+  line-height: 40px;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 1rem;
+  opacity: 0.9;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+button:focus {
+  outline: none !important;
+}
+.card-add-btn .create {
+  margin-right: 4px;
+  color: white;
+  background-color: #28a745;
+  background-image: linear-gradient(-180deg, #34d058, #28a745 90%);
+}
+.card-add-btn .cancle {
+  color: #000;
+  background-color: #eff3f6;
+  background-image: linear-gradient(-180deg, #fafbfc, #eff3f6 90%);
+}
+
+.card-add-btn button.disable {
+  opacity: 0.6;
+}
+.card-add-btn button:hover {
+  opacity: 1;
+  border: 1px solid rgba(0, 0, 0, 0.3);
 }
