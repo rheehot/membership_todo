@@ -26,7 +26,9 @@ class Card {
     $();
   }
 
-  addClickEvent() {}
+  addClickEvent() {
+    $('.card', { type: 'all' });
+  }
 
   init() {
     this.renderView();
