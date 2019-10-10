@@ -11,8 +11,6 @@ class Board {
   constructor(title, model) {
     this.title = title;
     this.model = model;
-    this.columns = [];
-    this.todos = [];
   }
 
   async renderView() {
@@ -20,27 +18,22 @@ class Board {
     await this.createBoard();
     await this.createColumns();
     await this.createTodos();
-    await this.columns.forEach((col) => {
-      col.init();
-    });
-    await this.todos.forEach((todo) => {
-      todo.init();
-    });
-
     await this.addColumnView();
   }
 
   async createColumns() {
     const { columnData } = this.model;
     columnData.forEach((col) => {
-      this.columns.push(new Column(col, columnModel));
+      const column = new Column(col, columnModel);
+      column.init();
     });
   }
 
   async createTodos() {
     const { todoData } = this.model;
     todoData.forEach((todo) => {
-      this.todos.push(new Card(todo, todoModel));
+      const todoCard = new Card(todo, todoModel);
+      todoCard.init();
     });
   }
 
