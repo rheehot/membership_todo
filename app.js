@@ -98,7 +98,7 @@ const resetDB = require('./server/utils/insertDummy');
 
 const server = app.listen(process.env.PORT || 3000, async () => {
   const port = server.address();
-  // console.log(`Express server listening on port  ${port.port}`);
+  console.log(`Express server listening on port  ${port.port}`);
   // await resetDB();
   // console.log('resetDB');
 });

@@ -56,7 +56,7 @@ const createUser = async (user) => {
   const { userId, pw, name, birth, gender, email, phone, favorite } = user;
   const auth = !user.auth ? 'user' : user.auth;
 
-  const sql1 = `INSERT INTO user (user_id, pw, name, birth, gender, email, phone, favorite, auth ) VALUES ('${userId}', '${passwordHash(pw)}', '${name}', '${birth}', '${gender}', '${email}', '${phone}', '${favorite}', '${auth}');`;
+  const sql1 = `INSERT INTO USER (user_id, pw, name, birth, gender, email, phone, favorite, auth ) VALUES ('${userId}', '${passwordHash(pw)}', '${name}', '${birth}', '${gender}', '${email}', '${phone}', '${favorite}', '${auth}');`;
 
   await pool.execute(sql1);
 

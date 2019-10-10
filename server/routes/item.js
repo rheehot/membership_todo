@@ -19,7 +19,7 @@ const { upload, deleteStorage } = reauire('../middlewares/multer');
  *      colSeq:1,
  *      userId:'ttt',
  *      content:'aaa',
- *      order:1,
+ *      itemOrder:1,
  *      url:'aaa.com',
  *      createDate:'2018-04-1',
  *      updateDate:'2018-04-1'
@@ -47,7 +47,7 @@ router.get('/', async (req, res, next) => {
  *      colSeq:1,
  *      userId:'ttt',
  *      content:'aaa',
- *      order:1,
+ *      itemOrder:1,
  *      file: 'file'
  *  }
  *
@@ -58,7 +58,7 @@ router.get('/', async (req, res, next) => {
  *      colSeq:1,
  *      userId:'ttt',
  *      content:'aaa',
- *      order:1,
+ *      itemOrder:1,
  *      url:'aaa.com',
  *      createDate:'2018-04-1',
  *      updateDate:'2018-04-1'
@@ -66,11 +66,16 @@ router.get('/', async (req, res, next) => {
  * ]
  */
 router.post('/', upload.array('file'), async (req, res, next) => {
-  const { colSeq, userId, content, order } = req.body;
+  const { colSeq, userId, content, itemOrder } = req.body;
   const urls = req.files.length > 0 ? req.files.map((f) => f.location) : false;
 
   try {
-    const resertSeq = await item.createItem({ colSeq, userId, content, order });
+    const resertSeq = await item.createItem({
+      colSeq,
+      userId,
+      content,
+      itemOrder,
+    });
     if (urls) await file.createFile(resertSeq, urls);
 
     const result = await item.getItem(resultSeq);
@@ -93,7 +98,7 @@ router.post('/', upload.array('file'), async (req, res, next) => {
  *      colSeq:1,
  *      userId:'ttt',
  *      content:'aaa',
- *      order:1,
+ *      itemOrder:1,
  *      file: 'file'
  *  }
  *
@@ -104,7 +109,7 @@ router.post('/', upload.array('file'), async (req, res, next) => {
  *      colSeq:1,
  *      userId:'ttt',
  *      content:'aaa',
- *      order:1,
+ *      itemOrder:1,
  *      url:'aaa.com',
  *      createDate:'2018-04-1',
  *      updateDate:'2018-04-1'
@@ -113,7 +118,7 @@ router.post('/', upload.array('file'), async (req, res, next) => {
  */
 router.put('/:itemSeq', upload.array('file'), async (req, res, next) => {
   const { itemSeq } = req.params;
-  const { colSeq, userId, content, order } = req.body;
+  const { colSeq, userId, content, itemOrder } = req.body;
   const urls = req.files.length > 0 ? req.files.map((f) => f.location) : false;
 
   try {
@@ -129,7 +134,7 @@ router.put('/:itemSeq', upload.array('file'), async (req, res, next) => {
       colSeq,
       userId,
       content,
-      order,
+      itemOrder,
     });
     res.status(200).json(result);
   } catch (err) {

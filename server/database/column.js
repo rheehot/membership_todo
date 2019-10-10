@@ -23,9 +23,9 @@ const getColumn = async (seq) => {
  * @return {object} column
  */
 const createColumn = async (column) => {
-  const { boardSeq, title, order } = column;
+  const { boardSeq, title, colOrder } = column;
 
-  const sql1 = `INSERT INTO COL (board_seq, title, order ) VALUES ('${boardSeq}', '${title}', '${order}');`;
+  const sql1 = `INSERT INTO COL (board_seq, title, col_order) VALUES ('${boardSeq}', '${title}', '${colOrder}');`;
 
   await pool.execute(sql1);
 
@@ -43,7 +43,7 @@ const createColumn = async (column) => {
  * @return {object} column
  */
 const modifyColumn = async (seq, column) => {
-  const { boardSeq, title, order } = column;
+  const { boardSeq, title, colOrder } = column;
   const queries = [];
 
   if (boardSeq !== undefined) {
@@ -52,8 +52,8 @@ const modifyColumn = async (seq, column) => {
   if (title !== undefined) {
     queries.push(`title='${title}'`);
   }
-  if (order !== undefined) {
-    queries.push(`order='${order}'`);
+  if (colOrder !== undefined) {
+    queries.push(`col_order='${colOrder}'`);
   }
 
   queries.push(`update_date='${convertTime()}'`);

@@ -13,8 +13,8 @@ const defaultCol = ['todo', 'doing', 'done'];
  */
 const getBoardItems = async (seq) => {
   const sql = `SELECT B.seq as board_seq, 
-  C.seq as col_seq, C.title as col_title, C.order as col_order, 
-  I.seq as item_seq, I.user_id, I.content, I.order as item_order
+  C.seq as col_seq, C.title as col_title, C.col_order,
+  I.seq as item_seq, I.user_id, I.content, I.item_order
   FROM BOARD B
     LEFT OUTER JOIN COL C ON B.seq = C.board_seq
     LEFT OUTER JOIN ITEM I ON C.seq = I.col_seq
@@ -66,8 +66,8 @@ const createBoard = async (board) => {
   const { seq } = rows[0];
 
   for (const [i, name] of defaultCol.entries()) {
-    const sql2 = 'INSERT INTO COL (board_seq, title, order ) VALUES (?,?,?);';
-    await pool.execute(sql2, [seq, name, i]);
+    const sql2 = 'INSERT INTO COL (board_seq, title, col_order) VALUES (?,?,?);';
+    await pool.execute(sql2, [seq, name, +i]);
   }
 
   return await getBoardItems(seq);

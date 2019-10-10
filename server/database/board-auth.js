@@ -40,13 +40,12 @@ const getAuthbyBoard = async (boardSeq) => {
  * @param {object} auth json
  * @return {array} auths
  */
-const createAuth = async (_auth) => {
-  const { userSeq, boardSeq, auth } = _auth;
+const createAuth = async (auth) => {
+  const { userSeq, boardSeq, boardAuth } = auth;
+  const sql1 = 'INSERT INTO AUTH (user_seq, board_seq, board_auth ) VALUES (?,?,?);';
+  await pool.execute(sql1, [userSeq, boardSeq, boardAuth]);
 
-  const sql1 = 'INSERT INTO AUTH (user_seq, board_seq, auth ) VALUES (?,?,?);';
-  await pool.execute(sql1, [userSeq, boardSeq, auth]);
-
-  const sql2 = 'SELECT FROM AUTH WHERE board_seq =? AND user_seq = ?;';
+  const sql2 = 'SELECT * FROM AUTH WHERE board_seq = ? AND user_seq = ? ;';
   const [rows] = await pool.execute(sql2, [boardSeq, userSeq]);
 
   return rows.length === 0 ? null : await boardAuthModel(rows[0]);
@@ -62,7 +61,7 @@ const modifyAuth = async (_auth) => {
   const { userSeq, boardSeq, auth } = _auth;
 
   if (auth === undefined) return null;
-  const sql = 'UPDATE AUTH SET auth = ? WHERE board_seq =? AND user_seq = ?;';
+  const sql = 'UPDATE AUTH SET auth = ? WHERE board_seq = ? AND user_seq = ?;';
   await pool.execute(sql, [auth, boardSeq, userSeq]);
 
   return await getAuthbyUser(userSeq);

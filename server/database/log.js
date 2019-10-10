@@ -10,8 +10,8 @@ const convertTime = require('../utils/convertTime');
  * @return {object} log
  */
 const getLog = async (seq) => {
-  const sql = 'SELECT * FROM LOG WHERE ?';
-  const [rows] = await pool.execute(sql, { seq });
+  const sql = 'SELECT * FROM LOG WHERE seq=?';
+  const [rows] = await pool.execute(sql, [seq]);
 
   return rows.length === 0 ? null : await logModel(rows[0]);
 };
@@ -41,13 +41,12 @@ const getBoardLogs = async (boardSeq) => {
 const createLog = async (log) => {
   const { boardSeq, content, userId } = log;
 
-  const sql1 = 'INSERT INTO LOG (board_seq, content, user_id, createDate ) VALUES (?,?,?,?);';
-  await pool.execute(sql1, [boardSeq, content, userId, convertTime()]);
+  const sql1 = 'INSERT INTO LOG (board_seq, content, user_id ) VALUES (?,?,?);';
+  await pool.execute(sql1, [boardSeq, content, userId]);
 
   const sql2 = 'SELECT LAST_INSERT_ID() AS seq;';
-  const [rows] = await pool.excute(sql2);
+  const [rows] = await pool.execute(sql2);
   const { seq } = rows[0];
-
   return await getLog(seq);
 };
 

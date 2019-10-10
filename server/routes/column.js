@@ -14,7 +14,7 @@ const { column } = require('../database');
  *  {
  *   boardSeq: 1,
  *   title: 'todo'
- *   order: 1
+ *   colOrder: 1
  *  }
  *
  * @apiSuccessExample Success-Response:
@@ -22,7 +22,7 @@ const { column } = require('../database');
  *   seq: 1,
  *   boardSeq: 1,
  *   title: 'todo'
- *   order: 1,
+ *   colOrder: 1,
  *   createDate:'2018-8-1',
  *   updateDate:'2018-8-1',
  *  }
@@ -48,7 +48,7 @@ router.post('/', async (req, res, next) => {
  *  {
  *   boardSeq: 1,
  *   title: 'todo1'
- *   order: 1
+ *   colOrder: 1
  *  }
  *
  * @apiSuccessExample Success-Response:
@@ -56,7 +56,7 @@ router.post('/', async (req, res, next) => {
  *   seq: 1,
  *   boardSeq: 1,
  *   title: 'todo1'
- *   order: 1,
+ *   colOrder: 1,
  *   createDate:'2018-8-1',
  *   updateDate:'2018-8-1',
  *  }
