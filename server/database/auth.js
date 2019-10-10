@@ -1,5 +1,5 @@
 const pool = require('./db');
-const { authModel } = require('../models/auth');
+const authModel = require('../models/auth');
 const convertTime = require('../utils/convertTime');
 
 

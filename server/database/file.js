@@ -1,5 +1,5 @@
 const pool = require('./db');
-const { fileModel } = require('../models/auth');
+const fileModel = require('../models/file');
 const convertTime = require('../utils/convertTime');
 
 
