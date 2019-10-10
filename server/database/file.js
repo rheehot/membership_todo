@@ -37,11 +37,11 @@ const getItemFiles = async (itemSeq) => {
  * @param {object} file json
  * @return {object} file
  */
-const createFile = async (file) => {
-  const { itemSeq, url } = file;
-
-  const sql1 = 'INSERT INTO FILE (item_seq, url) VALUES (?,?);';
-  await pool.execute(sql1, [itemSeq, url]);
+const createFile = async (itemSeq, files) => {
+  for (const url of files) {
+    const sql1 = 'INSERT INTO FILE (item_seq, url) VALUES (?,?);';
+    await pool.execute(sql1, [itemSeq, url]);
+  }
 
   const sql2 = 'SELECT LAST_INSERT_ID() AS seq;';
   const [rows] = await pool.execute(sql2);
