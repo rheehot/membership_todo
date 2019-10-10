@@ -37,7 +37,7 @@ const upload = multer({
   }),
 });
 
-const deleteFile = (url) => s3.deleteObject(
+const deleteStorage = (url) => s3.deleteObject(
     {
       Bucket: process.env.NC_BUCKET,
       Key: `images/${url.split('images/')[1]}`,
@@ -47,4 +47,4 @@ const deleteFile = (url) => s3.deleteObject(
     },
   );
 
-module.exports = { upload, deleteFile };
+module.exports = { upload, deleteStorage };

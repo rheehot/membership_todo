@@ -1,7 +1,7 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const passwordHash = require('../utils/passwordHash');
-const { createUser, getUserById } = require('../database/users');
+const { createUser, getUserById } = require('../database/user');
 
 passport.serializeUser((user, done) => {
   //   console.log('ser', user);

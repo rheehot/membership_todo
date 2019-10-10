@@ -1,7 +1,7 @@
 const express = require('express');
 
 const router = express.Router();
-const db = require('../database/users');
+const db = require('../database/user');
 const passport = require('../middlewares/passport-local');
 
 router.get('/islogin', async (req, res, next) => {

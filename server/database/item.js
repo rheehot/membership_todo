@@ -32,16 +32,17 @@ const getItem = async (seq) => {
  * @return {object} item
  */
 const createItem = async (item) => {
-  const { colSeq, userId, content, order } = item;
+  const { colSeq, userId, content, itemOrder } = item;
 
-  const sql1 = 'INSERT INTO ITEM (col_seq, user_id, content, order ) VALUES (?,?,?,?);';
-  await pool.execute(sql1, [colSeq, userId, content, order]);
+  const sql1 = 'INSERT INTO ITEM (col_seq, user_id, content, item_order ) VALUES (?,?,?,?);';
+  await pool.execute(sql1, [colSeq, userId, content, itemOrder]);
 
   const sql2 = 'SELECT LAST_INSERT_ID() AS seq;';
-  const [rows] = await pool.excute(sql2);
+  const [rows] = await pool.execute(sql2);
   const { seq } = rows[0];
 
-  return await getItem(seq);
+  // return await getItem(seq);
+  return seq;
 };
 
 /**
@@ -51,7 +52,7 @@ const createItem = async (item) => {
  * @return {object} item
  */
 const modifyItem = async (seq, item) => {
-  const { colSeq, userId, content, order } = item;
+  const { colSeq, userId, content, itemOrder } = item;
   const queries = [];
 
   if (colSeq !== undefined) {
@@ -63,8 +64,8 @@ const modifyItem = async (seq, item) => {
   if (content !== undefined) {
     queries.push(`content='${content}'`);
   }
-  if (order !== undefined) {
-    queries.push(`order='${order}'`);
+  if (itemOrder !== undefined) {
+    queries.push(`item_order='${itemOrder}'`);
   }
 
   queries.push(`update_date='${convertTime()}'`);

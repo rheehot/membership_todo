@@ -5,7 +5,7 @@ const itemModel = (result) => ({
   colSeq: result.col_seq,
   userId: result.user_id,
   content: result.content,
-  order: result.order,
+  itemOrder: result.item_order,
   createDate: parseTime(result.create_date),
   updateDate: parseTime(result.update_date),
 });
@@ -15,7 +15,7 @@ const itemFilesModel = (result) => ({
   colSeq: result.col_seq,
   userId: result.user_id,
   content: result.content,
-  order: result.order,
+  itemOrder: result.item_order,
   url: result.url,
   createDate: parseTime(result.create_date),
   updateDate: parseTime(result.update_date),
