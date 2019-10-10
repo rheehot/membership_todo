@@ -1,5 +1,5 @@
-import Observable from "../utils/observable";
-import { getData, postData, deleteData, putData } from "../utils/dataFetch";
+import Observable from '../utils/observable';
+import { getData, postData, deleteData, putData } from '../utils/dataFetch';
 
 class TodoModel extends Observable {
   constructor(url) {
@@ -29,7 +29,7 @@ class TodoModel extends Observable {
    */
   async addTodo(todo) {
     const result = await postData(this.url, todo);
-    this.notify("add", result);
+    this.notify('add', result);
     return result;
   }
 
@@ -41,9 +41,9 @@ class TodoModel extends Observable {
    * @return {object} todo item
    */
   async updateTodo(seq, todo, todoArr) {
-    const result = { todo, from: col.order, to: null };
+    // const result = { todo, from: col.order, to: null };
     const result = await putData(this.url, seq, todo);
-    this.notify("update", result);
+    this.notify('update', result);
     return result;
   }
 
@@ -57,7 +57,7 @@ class TodoModel extends Observable {
    */
   async moveTodo(seq, todo) {
     const result = await putData(this.url, seq, todo);
-    this.notify("move", result);
+    this.notify('move', result);
     return result;
   }
 
@@ -70,7 +70,7 @@ class TodoModel extends Observable {
    */
   async deleteTodo(seq, todo) {
     const result = await deleteData(this.url, seq);
-    this.notify("delete", todo);
+    this.notify('delete', todo);
     return result;
   }
 }

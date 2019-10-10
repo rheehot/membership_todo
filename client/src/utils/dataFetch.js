@@ -33,7 +33,7 @@ const getData = async (url) => {
   const options = {
     method: 'GET',
     cache: 'no-cache',
-    mode: 'same-origin',
+    mode: 'no-cors',
     credentials: 'include',
     headers: {
       Accept: 'application/json',

@@ -9,22 +9,34 @@ class BoardModel extends Observable {
     this.todoData = [];
   }
 
-  async updateBoardAuth() {}
+  // async updateBoardAuth() {}
 
-  async updateBoard() {}
+  // async updateBoard() {}
 
   async getInitialData() {
     const initialData = await getData(this.url);
-
-    initialData.reduce((acc, cur) => {
-      const { itemSeq, userID, content, itemOrder } = acc;
-      this.todoData.push({ itemSeq, userID, content, itemOrder });
-
-      if (acc.colSeq !== cur.colSeq) {
-        const { colSeq, colTitle, colOrder } = acc;
+    initialData.forEach((data, idx, arr) => {
+      const {
+        colSeq,
+        colTitle,
+        colOrder,
+        itemSeq,
+        itemWriter,
+        itemContent,
+        itemOrder,
+      } = data;
+      if (itemSeq) {
+        this.todoData.push({
+          colSeq,
+          itemSeq,
+          itemWriter,
+          itemContent,
+          itemOrder,
+        });
+      }
+      if (idx === 0 || colSeq !== arr[idx - 1].colSeq) {
         this.columnData.push({ colSeq, colTitle, colOrder });
       }
-      return cur;
     });
   }
 }

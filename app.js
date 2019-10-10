@@ -82,6 +82,7 @@ app.use((req, res, next) => {
 app.use(express.static(path.join(__dirname, './server/public')));
 
 // routing
+app.use('/', express.static('./client/build/'));
 app.use('/api', express.static('./server/apidoc'));
 
 app.use('/api/accounts', accounts);
