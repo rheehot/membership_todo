@@ -21,7 +21,9 @@ const getBoardItems = async (seq) => {
 
   const [rows] = await pool.execute(sql, [seq]);
 
+  if (rows.length === 0) return null;
   const result = rows.map((row) => boardItemsModel(row));
+
   return await result;
 };
 
@@ -37,8 +39,8 @@ const getBoardsByUser = async (userSeq) => {
   const [rows] = await pool.execute(sql, [userSeq]);
 
   if (rows.length === 0) return null;
-
   const result = rows.map((row) => boardModel(row));
+
   return await result;
 };
 

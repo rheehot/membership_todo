@@ -13,7 +13,10 @@ const getAuthbyUser = async (userSeq) => {
   const sql = 'SELECT * FROM AUTH WHERE user_seq = ?';
   const [rows] = await pool.execute(sql, [userSeq]);
 
-  return rows.length === 0 ? null : await authModel(rows[0]);
+  if (rows.length === 0) return null;
+  const result = rows.map((row) => boardItemsModel(row));
+
+  return await result;
 };
 
 /**
@@ -26,7 +29,10 @@ const getAuthbyBoard = async (boardSeq) => {
   const sql = 'SELECT * FROM AUTH WHERE board_seq = ?';
   const [rows] = await pool.execute(sql, [boardSeq]);
 
-  return rows.length === 0 ? null : await authModel(rows[0]);
+  if (rows.length === 0) return null;
+  const result = rows.map((row) => boardItemsModel(row));
+
+  return await result;
 };
 
 /**
@@ -41,7 +47,10 @@ const createAuth = async (_auth) => {
   const sql1 = 'INSERT INTO AUTH (user_seq, board_seq, auth ) VALUES (?,?,?);';
   await pool.execute(sql1, [userSeq, boardSeq, auth]);
 
-  return await getAuthbyUser(userSeq);
+  const sql2 = 'SELECT FROM AUTH WHERE board_seq =? AND user_seq = ?;';
+  const [rows] = await pool.execute(sql2, [boardSeq, userSeq]);
+
+  return rows.length === 0 ? null : await authModel(rows[0]);
 };
 
 /**
@@ -52,25 +61,10 @@ const createAuth = async (_auth) => {
  */
 const modifyAuth = async (_auth) => {
   const { userSeq, boardSeq, auth } = _auth;
-  const queries = {};
 
-  if (userSeq !== undefined) {
-    // queries.push(`user_seq= '${userSeq}'`);
-    queries[user_seq] = userSeq;
-  }
-  if (boardSeq !== undefined) {
-    // queries.push(`board_seq='${boardSeq}'`);
-    queries[board_seq] = boardSeq;
-  }
-  if (auth !== undefined) {
-    // queries.push(`auth='${auth}'`);
-    queries[auth] = auth;
-  }
-
-  queries.push(`update_date='${convertTime()}'`);
-
-  const sql = 'UPDATE AUTH SET ? WHERE ?;';
-  await pool.execute(sql, queries);
+  if (auth === undefined) return null;
+  const sql = 'UPDATE AUTH SET auth = ? WHERE board_seq =? AND user_seq = ?;';
+  await pool.execute(sql, [auth, boardSeq, userSeq]);
 
   return await getAuthbyUser(userSeq);
 };
