@@ -84,8 +84,8 @@ const modifyAuth = async (_auth) => {
  */
 const deleteAuth = async (_auth) => {
   const { userSeq, boardSeq } = _auth;
-  const sql1 = `DELETE FROM AUTH WHERE board_seq = ${boardSeq} AND user_seq = ${userSeq};`;
-  const [rows] = await pool.execute(sql1);
+  const sql1 = 'DELETE FROM AUTH WHERE board_seq =? AND user_seq = ?;';
+  const [rows] = await pool.execute(sql1, [boardSeq, userSeq]);
   return rows;
 };
 
