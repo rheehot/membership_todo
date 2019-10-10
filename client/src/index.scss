@@ -170,6 +170,12 @@ nav {
 .card-add-input {
   width: 100%;
   padding: 10px;
+  display: none;
+}
+.card-add-input.visible {
+  width: 100%;
+  padding: 10px;
+  display: block;
 }
 .card-add-input textarea {
   resize: vertical;
@@ -213,10 +219,13 @@ button:focus {
   background-image: linear-gradient(-180deg, #fafbfc, #eff3f6 90%);
 }
 
-.card-add-btn button.disable {
+.card-add-btn.disable {
   opacity: 0.6;
 }
 .card-add-btn button:hover {
   opacity: 1;
   border: 1px solid rgba(0, 0, 0, 0.3);
+}
+.sortable-ghost {
+  opacity: 0.4;
 }

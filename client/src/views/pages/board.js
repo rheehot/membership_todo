@@ -1,14 +1,16 @@
+import Sortable from 'sortablejs';
 import { ColumnModel, TodoModel } from '../../models';
 import { Card, Column, SideBar, Header } from '../components';
 import { selector as $ } from '../../utils';
 
-const columnModel = new ColumnModel('http://localhost:3000/api/column');
-const todoModel = new TodoModel('http://localhost:3000/api/item');
+const columnModel = new ColumnModel('http://localhost:3000/api/column/');
+const todoModel = new TodoModel('http://localhost:3000/api/item/');
 
 class Board {
-  constructor(title, model) {
+  constructor(user, title, model) {
     this.title = title;
     this.model = model;
+    this.user = user;
   }
 
   async renderView() {
@@ -17,6 +19,19 @@ class Board {
     await this.createColumns();
     await this.createTodos();
     await this.addColumnView();
+    await this.sortableCard();
+  }
+
+  sortableCard() {
+    const cardList = $('ul.cards', { type: 'all' });
+    cardList.forEach((ul) => {
+      Sortable.create(ul, {
+        group: 'shared',
+        animation: 200,
+        emptyInsertThreshold: 100,
+        fallbackTolerance: 3,
+      });
+    });
   }
 
   async createColumns() {

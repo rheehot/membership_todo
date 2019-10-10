@@ -28,8 +28,13 @@ class TodoModel extends Observable {
    * @return {object} todo item
    */
   async addTodo(todo) {
+    console.log('model');
     const result = await postData(this.url, todo);
+    console.log(result);
+
     this.notify('add', result);
+    console.log('noti');
+
     return result;
   }
 
@@ -69,7 +74,7 @@ class TodoModel extends Observable {
    * @return {object} status
    */
   async deleteTodo(seq, todo) {
-    const result = await deleteData(this.url, seq);
+    const result = await deleteData(this.url + seq, seq);
     this.notify('delete', todo);
     return result;
   }

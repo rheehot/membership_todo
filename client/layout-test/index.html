@@ -34,7 +34,7 @@
               </div>
             </div>
             <div class="card-add-input">
-              <textarea maxlength="500" placeholder="note..."> </textarea>
+              <textarea maxlength="500" placeholder="note..."></textarea>
               <dib class="card-add-btn">
                 <button class="create">
                   add
@@ -87,15 +87,24 @@
     </div>
   </body>
   <script>
-    const inputTmpl = ``;
     const additembtn = document.querySelectorAll(".col-add");
     additembtn.forEach(btn => {
       btn.addEventListener("click", e => {
         const path = e.path;
-        console.log(path);
         const col = path.find(p => p.tagName === "SECTION");
-        const colhead = col.querySelector("col-head");
-        colhead.insertAdjacentHTML("afterend", inputTmpl);
+        const addInput = col.querySelector(".card-add-input");
+        addInput.classList.toggle("visible");
+      });
+    });
+
+    const cancleitembtn = document.querySelectorAll(".card-add-btn .cancle");
+    cancleitembtn.forEach(btn => {
+      btn.addEventListener("click", function(e) {
+        console.log(this);
+        const path = e.path;
+        const parent = path.find(p => p.className === "card-add-input visible");
+        const input = parent.querySelector("textarea");
+        input.value = "";
       });
     });
   </script>

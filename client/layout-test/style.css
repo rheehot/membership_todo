@@ -170,6 +170,12 @@ nav {
 .card-add-input {
   width: 100%;
   padding: 10px;
+  display: none;
+}
+.card-add-input.visible {
+  width: 100%;
+  padding: 10px;
+  display: block;
 }
 .card-add-input textarea {
   resize: vertical;

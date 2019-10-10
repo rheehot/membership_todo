@@ -25,6 +25,7 @@ class BoardModel extends Observable {
         itemContent,
         itemOrder,
       } = data;
+
       if (itemSeq) {
         this.todoData.push({
           colSeq,

@@ -83,8 +83,8 @@ const modifyItem = async (seq, item) => {
  * @return {object} info
  */
 const deleteItem = async (seq) => {
-  const sql1 = 'DELETE FROM ITEM WHERE ?;';
-  const [rows] = await pool.execute(sql1, { seq });
+  const sql1 = 'DELETE FROM ITEM WHERE seq = ?;';
+  const [rows] = await pool.execute(sql1, [seq]);
   return rows;
 };
 

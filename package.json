@@ -75,6 +75,7 @@
     "passport-local": "^1.0.0",
     "redis": "^2.8.0",
     "serve-favicon": "^2.5.0",
+    "sortablejs": "^1.10.1",
     "uuid": "^3.3.3"
   },
   "husky": {
