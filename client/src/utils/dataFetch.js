@@ -29,7 +29,11 @@ const deleteData = async (url = '') => {
       'Content-Type': 'application/json',
     },
   };
-  const response = await fetch(url, options).then((res) => res);
+  const response = await fetch(url, options)
+    .then((res) => res)
+    .catch((error) => {
+      throw error;
+    });
   return response;
 };
 
@@ -58,13 +62,17 @@ const putData = async (url = '', data = {}) => {
     cache: 'no-cache',
     mode: 'same-origin',
     credentials: 'include',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(data),
+    // headers: {
+    //   Accept: 'application/json',
+    //   'Content-Type': 'application/json',
+    // },
+    body: data,
   };
-  const response = await fetch(url, options).then((res) => res.json());
+  const response = await fetch(url, options)
+    .then((res) => res.json())
+    .catch((error) => {
+      throw error;
+    });
   return response;
 };
 

@@ -9,8 +9,13 @@ class BoardModel extends Observable {
     this.todoData = [];
   }
 
-  // async updateBoardAuth() {}
-  // async updateBoard() {}
+  // async updateBoardAuth() {
+
+  // }
+
+  // async updateBoardTitle() {
+
+  // }
 
   async getInitialData() {
     const initialData = await getData(this.url);

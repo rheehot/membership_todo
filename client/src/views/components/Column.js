@@ -1,8 +1,9 @@
 import { selector as $ } from '../../utils';
 import Card from './Card';
 import { TodoModel } from '../../models';
+import { itemAPI } from '../../config/api';
 
-const todoModel = new TodoModel('http://localhost:3000/api/item/');
+const todoModel = new TodoModel(itemAPI);
 
 
 class Column {
@@ -80,6 +81,7 @@ class Column {
     formData.append('itemOrder', 2);
 
     const [result] = await todoModel.addTodo(formData);
+
     const newtodo = {
       itemSeq: result.seq,
       itemContent: result.content,
@@ -121,7 +123,6 @@ class Column {
     const inputBtn = $(`#col${this.colSeq} .card-add-btn`);
     const cancleItembtn = $(`#col${this.colSeq} .card-add-btn .cancle`);
     const addItembtn = $(`#col${this.colSeq} .card-add-btn .create`);
-
 
     return { addCardbtn, addInput, inputArea, inputBtn, cancleItembtn, addItembtn };
   }

@@ -32,23 +32,31 @@ class Card {
     cards.insertAdjacentHTML('afterbegin', cardTmpl);
   }
 
-  deleteCard() {
+  deleteCardHandler(e) {
     const { itemSeq, colSeq, itemContent } = this;
     const item = $(`#card${this.itemSeq}`);
-    const deleteBtn = $(`#card${this.itemSeq} .delete-btn`);
+    const popup = confirm('정말 삭제하시겠습니까?');
+    if (popup) {
+      this.model.deleteTodo(itemSeq, { itemSeq, colSeq, itemContent });
+      item.parentNode.removeChild(item);
+    }
+  }
 
-    deleteBtn.addEventListener('click', (e) => {
-      const popup = confirm('정말 삭제하시겠습니까?');
-      if (popup) {
-        this.model.deleteTodo(itemSeq, { itemSeq, colSeq, itemContent });
-        item.parentNode.removeChild(item);
-      }
-    });
+  editCardHandler() {
+
+  }
+
+  attatchEvent() {
+    const deleteBtn = $(`#card${this.itemSeq} .delete-btn`);
+    const card = $(`#card${this.itemSeq}`);
+
+    deleteBtn.addEventListener('click', (e) => this.deleteCardHandler(e));
+    card.addEventListener('click', (e) => this.editCardHandler(e));
   }
 
   init() {
     this.insertCard(this);
-    this.deleteCard();
+    this.attatchEvent();
   }
 }
 export default Card;

@@ -21,10 +21,11 @@ header {
   height: 50px;
   background: rgb(37, 41, 45);
   display: flex;
-  justify-content: space-around;
+  justify-content: flex-start;
   align-items: center;
   color: #fff;
   flex-shrink: 0;
+  padding: 0 20px;
 }
 .board {
   width: 100%;
@@ -49,6 +50,7 @@ nav {
   justify-content: flex-end;
   align-items: center;
   flex-shrink: 0;
+  padding: 0 20px;
 }
 
 /* col */

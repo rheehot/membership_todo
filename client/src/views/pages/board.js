@@ -1,10 +1,11 @@
 import Sortable from 'sortablejs';
 import { ColumnModel, TodoModel } from '../../models';
+import { itemAPI, columnAPI } from '../../config/api';
 import { Card, Column, SideBar, Header } from '../components';
 import { selector as $ } from '../../utils';
 
-const columnModel = new ColumnModel('http://localhost:3000/api/column/');
-const todoModel = new TodoModel('http://localhost:3000/api/item/');
+const columnModel = new ColumnModel(columnAPI);
+const todoModel = new TodoModel(itemAPI);
 
 class Board {
   constructor(user, title, model) {
