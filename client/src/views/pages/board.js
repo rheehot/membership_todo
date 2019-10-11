@@ -36,6 +36,7 @@ class Board {
 
   async createColumns() {
     const { columnData } = this.model;
+    columnData.sort((a, b) => a.colOrder - b.colOrder);
     columnData.forEach((col) => {
       const column = new Column(col, columnModel);
       column.init();
@@ -44,6 +45,7 @@ class Board {
 
   async createTodos() {
     const { todoData } = this.model;
+    todoData.sort((a, b) => a.colOrder - b.colOrder);
     todoData.forEach((todo) => {
       const todoCard = new Card(todo, todoModel);
       todoCard.init();
