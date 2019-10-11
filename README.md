@@ -11,7 +11,7 @@
 
 > 투두서비스 구현하기 
 
-### 🏠 [Homepage](http://ec2-13-209-190-114.ap-northeast-2.compute.amazonaws.com/)
+### [Demo page](http://ec2-13-209-190-114.ap-northeast-2.compute.amazonaws.com/)
 
 ## Install
 
