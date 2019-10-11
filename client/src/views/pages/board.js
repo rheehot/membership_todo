@@ -9,18 +9,30 @@ const todoModel = new TodoModel(itemAPI);
 
 class Board {
   constructor(user, title, model) {
-    this.title = title;
-    this.model = model;
     this.user = user;
+    this.title = title;
+    this.boardModel = model;
+    this.columnModel = columnModel;
+    this.todoModel = todoModel;
   }
 
   async renderView() {
-    await this.model.getInitialData();
+    await this.boardModel.getInitialData();
     await this.createBoard();
     await this.createColumns();
     await this.createTodos();
     await this.addColumnView();
     await this.sortableCard();
+
+    this.todoModel.subscribe('card-update', this.updateItemLen);
+  }
+
+  updateItemLen(todo) {
+    const items = $(`#col${todo.colSeq} ul.cards li`, { type: 'all' });
+    if (items) {
+      const num = $(`#col${todo.colSeq} .col-num`);
+      num.innerHTML = items.length;
+    }
   }
 
   sortableCard() {
@@ -36,19 +48,19 @@ class Board {
   }
 
   async createColumns() {
-    const { columnData } = this.model;
+    const { columnData } = this.boardModel;
     columnData.sort((a, b) => a.colOrder - b.colOrder);
     columnData.forEach((col) => {
-      const column = new Column(col, columnModel);
+      const column = new Column(col, this.columnModel, this.todoModel);
       column.init();
     });
   }
 
   async createTodos() {
-    const { todoData } = this.model;
+    const { todoData } = this.boardModel;
     todoData.sort((a, b) => a.colOrder - b.colOrder);
     todoData.forEach((todo) => {
-      const todoCard = new Card(todo, todoModel);
+      const todoCard = new Card(todo, this.todoModel);
       todoCard.init();
     });
   }

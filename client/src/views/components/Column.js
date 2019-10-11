@@ -1,17 +1,13 @@
 import { selector as $ } from '../../utils';
 import Card from './Card';
-import { TodoModel } from '../../models';
-import { itemAPI } from '../../config/api';
-
-const todoModel = new TodoModel(itemAPI);
-
 
 class Column {
-  constructor(col, model) {
+  constructor(col, columnModel, todoModel) {
     this.colSeq = col.colSeq;
     this.title = col.colTitle;
     this.colOrder = col.colOrder;
-    this.model = model;
+    this.columnModel = columnModel;
+    this.todoModel = todoModel;
   }
 
   renderView() {
@@ -80,7 +76,7 @@ class Column {
     formData.append('content', inputArea.value);
     formData.append('itemOrder', 2);
 
-    const [result] = await todoModel.addTodo(formData);
+    const result = await this.todoModel.addTodo(formData);
 
     const newtodo = {
       itemSeq: result.seq,
@@ -90,7 +86,7 @@ class Column {
       colSeq: result.colSeq,
     };
 
-    const newCard = new Card(newtodo, todoModel);
+    const newCard = new Card(newtodo, this.todoModel);
     newCard.init();
   }
 

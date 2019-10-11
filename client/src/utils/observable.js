@@ -3,17 +3,14 @@ class Observable {
     this.handlers = {};
   }
 
-  subscribe(observer) {
-    const { eventName, handler } = observer;
-
+  subscribe(eventName, handler) {
     if (this.handlers[eventName] === undefined) {
       this.handlers[eventName] = [];
     }
     this.handlers[eventName].push(handler);
   }
 
-  unsubscribe(observer) {
-    const { eventName, handler } = observer;
+  unsubscribe(eventName, handler) {
     const handlerArr = this.handlers[eventName];
 
     if (handlerArr === undefined) return;
@@ -24,8 +21,9 @@ class Observable {
   notify(eventName, data) {
     const handlerArr = this.handlers[eventName];
     if (handlerArr === undefined) return;
-
-    handlerArr.forEach((handler) => handler(data));
+    for (const handler of handlerArr) {
+      handler(data);
+    }
   }
 }
 

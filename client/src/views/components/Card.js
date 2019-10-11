@@ -30,6 +30,9 @@ class Card {
     const cardTmpl = this.getTmpl(todo);
     const cards = $(`#col${this.colSeq} ul.cards`);
     cards.insertAdjacentHTML('afterbegin', cardTmpl);
+
+    const itemLen = $(`#col${this.colSeq} .col-num`);
+    itemLen.innerHTML++;
   }
 
   deleteCardHandler(e) {
@@ -49,9 +52,7 @@ class Card {
   attatchEvent() {
     const deleteBtn = $(`#card${this.itemSeq} .delete-btn`);
     const card = $(`#card${this.itemSeq}`);
-
     deleteBtn.addEventListener('click', (e) => this.deleteCardHandler(e));
-    card.addEventListener('click', (e) => this.editCardHandler(e));
   }
 
   init() {
