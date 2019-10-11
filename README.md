@@ -7,9 +7,6 @@
   <a href="https://github.com/aereeeee/membership-todo/graphs/commit-activity" target="_blank">
     <img alt="Maintenance" src="https://img.shields.io/badge/Maintained%3F-yes-green.svg" />
   </a>
-  <a href="https://github.com/aereeeee/membership-todo/blob/master/LICENSE" target="_blank">
-    <img alt="License: MIT" src="https://img.shields.io/github/license/aereeeee/membership-todo" />
-  </a>
 </p>
 
 > 투두서비스 구현하기 
