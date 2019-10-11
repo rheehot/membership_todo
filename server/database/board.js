@@ -67,7 +67,7 @@ const createBoard = async (board) => {
 
   for (const [i, name] of defaultCol.entries()) {
     const sql2 = 'INSERT INTO COL (board_seq, title, col_order) VALUES (?,?,?);';
-    await pool.execute(sql2, [seq, name, +i]);
+    await pool.execute(sql2, [seq, name, i]);
   }
 
   return await getBoardItems(seq);

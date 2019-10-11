@@ -16,7 +16,7 @@ class TodoModel extends Observable {
    */
   async getTodo(seq) {
     const result = await getData(this.url, seq);
-    return result;
+    return result[0];
   }
 
   /**
@@ -29,8 +29,8 @@ class TodoModel extends Observable {
    */
   async addTodo(todo) {
     const result = await postData(this.url, todo);
-    this.notify('add', result);
-    return result;
+    this.notify('card-update', result[0]);
+    return result[0];
   }
 
   /**
@@ -43,8 +43,8 @@ class TodoModel extends Observable {
   async updateTodo(seq, todo, todoArr) {
     // const result = { todo, from: col.order, to: null };
     const result = await putData(this.url, seq, todo);
-    this.notify('update', result);
-    return result;
+    this.notify('card-update', result[0]);
+    return result[0];
   }
 
   /**
@@ -57,8 +57,8 @@ class TodoModel extends Observable {
    */
   async moveTodo(seq, todo) {
     const result = await putData(this.url, seq, todo);
-    this.notify('move', result);
-    return result;
+    this.notify('card-update', result[0]);
+    return result[0];
   }
 
   /**
@@ -69,9 +69,9 @@ class TodoModel extends Observable {
    * @return {object} status
    */
   async deleteTodo(seq, todo) {
-    const result = await deleteData(this.url, seq);
-    this.notify('delete', todo);
-    return result;
+    const result = await deleteData(this.url + seq, seq);
+    this.notify('card-update', todo);
+    return result[0];
   }
 }
 

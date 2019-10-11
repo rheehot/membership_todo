@@ -21,7 +21,7 @@
       </div>
       <nav>view activity</nav>
       <article class="columns">
-        <section class="col">
+        <section class="col" id="col1" data-order="1">
           <div class="colbox">
             <div class="col-head">
               <div class="col-title">
@@ -32,6 +32,17 @@
                 <div class="col-add"><i class="fas fa-plus"></i></div>
                 <div class="col-set"><i class="fas fa-ellipsis-h"></i></div>
               </div>
+            </div>
+            <div class="card-add-input">
+              <textarea maxlength="500" placeholder="note..."></textarea>
+              <dib class="card-add-btn">
+                <button class="create">
+                  add
+                </button>
+                <button class="cancle">
+                  calcle
+                </button>
+              </dib>
             </div>
             <div class="cardlist">
               <ul class="cards">
@@ -79,7 +90,21 @@
     const additembtn = document.querySelectorAll(".col-add");
     additembtn.forEach(btn => {
       btn.addEventListener("click", e => {
-        console.log(e);
+        const path = e.path;
+        const col = path.find(p => p.tagName === "SECTION");
+        const addInput = col.querySelector(".card-add-input");
+        addInput.classList.toggle("visible");
+      });
+    });
+
+    const cancleitembtn = document.querySelectorAll(".card-add-btn .cancle");
+    cancleitembtn.forEach(btn => {
+      btn.addEventListener("click", function(e) {
+        console.log(this);
+        const path = e.path;
+        const parent = path.find(p => p.className === "card-add-input visible");
+        const input = parent.querySelector("textarea");
+        input.value = "";
       });
     });
   </script>

@@ -70,13 +70,13 @@ router.post('/', upload.array('file'), async (req, res, next) => {
   const urls = req.files.length > 0 ? req.files.map((f) => f.location) : false;
 
   try {
-    const resertSeq = await item.createItem({
+    const resultSeq = await item.createItem({
       colSeq,
       userId,
       content,
       itemOrder,
     });
-    if (urls) await file.createFile(resertSeq, urls);
+    if (urls) await file.createFile(resultSeq, urls);
 
     const result = await item.getItem(resultSeq);
     res.status(200).json(result);
@@ -155,10 +155,10 @@ router.put('/:itemSeq', upload.array('file'), async (req, res, next) => {
 router.delete('/:itemSeq', async (req, res, next) => {
   const { itemSeq } = req.params;
   try {
-    const files = await file.getItemFiles(itemSeq);
-    for (const f of files) {
-      await deleteStorage(f.url);
-    }
+    // const files = await file.getItemFiles(itemSeq);
+    // for (const f of files) {
+    //   await deleteStorage(f.url);
+    // }
 
     await item.deleteItem(itemSeq);
     res.status(204).end();

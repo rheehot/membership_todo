@@ -27,6 +27,7 @@
     "no-underscore-dangle": 0,
     "import/no-extraneous-dependencies": 0,
     "no-undef": 0,
-    "no-await-in-loop": 0
+    "no-await-in-loop": 0,
+    "no-new": 0
   }
 }
